@@ -1,2 +1,3 @@
-# quiz-time
-This app is slightly deepening my JavaScript knowledge. Created a game where we are generating a series of questions, have a time limit, and able to save the user's score in a 'high score' page
+## JavaScript Quiz
+
+This is a JavaScript quiz that I created using mostly JavaScript, with some HTML and CSS. See if you can beat the timer and the high score!
