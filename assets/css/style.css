@@ -50,14 +50,6 @@ h4 {
   text-align: center;
 }
 
-.timer::before {
-  content: '0';
-}
-
-.timer::after {
-  content: '';
-}
-
 .startGame-btn {
   padding: 1rem 1.5rem;
   background-color: deepskyblue;
