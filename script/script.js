@@ -1,7 +1,7 @@
 let timerEl = document.getElementById('countdown');
 let startTimer = document.querySelector('startGame-btn');
 
-let timeLeft = 5;
+let timeLeft = 6;
 function countDown () {
   let timeInterval = setInterval(function () {
     timeLeft--;
