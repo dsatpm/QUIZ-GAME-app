@@ -7,27 +7,67 @@
 }
 
 body {
-  background: linear-gradient(rgba(0, 0, 0, 0.263), rgba(0, 0, 0, 0.486)), url(../images/bg-img.jpg) no-repeat center / cover;
+  background: linear-gradient(170deg, rgba(49, 57, 73, 0.8) 20%, rgba(49, 57, 73, 0.5) 20%, rgba(49, 57, 73, 0.5) 35%, rgba(41, 48, 61, 0.6) 35%, rgba(41, 48, 61, 0.8) 45%, rgba(31, 36, 46, 0.5) 45%, rgba(31, 36, 46, 0.8) 75%, rgba(49, 57, 73, 0.5) 75%), linear-gradient(45deg, rgba(20, 24, 31, 0.8) 0%, rgba(41, 48, 61, 0.8) 50%, rgba(82, 95, 122, 0.8) 50%, rgba(133, 146, 173, 0.8) 100%) #313949;
   font-size: 16px;
   line-height: 22px;
-  color: rgb(245, 245, 245);
+  color: goldenrod;
   height: 100vh;
-  width: 100%;
+  font-family: 'Jost', sans-serif;
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   line-height: 40px;
+  padding: 1rem;
+  font-family: 'Bungee Shade', cursive;
+}
+
+h2 {
+  font-size: 2rem;
+  line-height: 38px;
+  padding: 0.5rem;
+  font-family: 'Fondamento', cursive;
 }
 
 h3 {
-  font-size: 1.4rem;
-  line-height: 34px;
+  font-size: 2.4rem;
+  line-height: 40px;
+  padding: 0.5rem;
+  text-decoration: underline;
 }
 
-h4 {
-  font-size: 1.1rem;
+p {
+  font-size: 1.2rem;
   line-height: 28px;
+  width: 430px;
+  text-align: center;
+}
+
+span {
+  text-decoration: underline;
+}
+
+button {
+  color: goldenrod;
+  background-color: transparent;
+  border: 0.3rem solid goldenrod;
+  width: 180px;
+  height: 50px;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: 0.3s;
+  transform: translateY(0deg);
+  margin: 1rem;
+}
+
+button:hover {
+  transform: translateY(180deg);
+  background-color: goldenrod;
+  color: black;
 }
 
 .container {
@@ -37,35 +77,114 @@ h4 {
   flex-direction: column;
 }
 
+.container.gameButtons {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.goty {
+  color: red;
+  animation: colorChange 1.5s infinite;
+  transition: animation 1s ease;
+}
+
+@keyframes colorChange {
+
+  0% {
+    color: pink;
+  }
+  14.3% {
+    color: red;
+  }
+  28.66% {
+    color: orange;
+  }
+  42.9% {
+    color: yellow;
+  }
+  57.2% {
+    color: green;
+  }
+  71.5% {
+    color: blue;
+  }
+  85.8% {
+    color: indigo;
+  }
+  100% {
+    color: violet;
+  }
+
+
+}
+
 .header {
-  padding: 1.5rem 1rem;
-}
-
-.header h1 {
-  border-bottom: 4px double white;
-}
-
-.header h3 {
-  width: 50%;
+  padding: 2rem 1rem;
   text-align: center;
 }
 
-.startGame-btn {
-  padding: 1rem 1.5rem;
-  background-color: deepskyblue;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 400;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.2s ease;
+#quizDisplay {
+  align-self: center;
+  font-size: 2.5rem;
+  line-height: 3rem;
+  margin: 1rem 0;
+  text-align: center;
 }
 
-.startGame-btn:hover {
-  background-color: rgb(6, 180, 237);
+#startGame {
+  display: block;
 }
 
 #countdown {
-  font-size: 18px;
+  font-size: 2.5rem;
+  line-height: 3rem;
+  margin: 1.5rem auto;
+  text-align: center;
+}
+
+#question {
+  width: 80%;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 2rem auto;
+}
+
+#answers {
+  font-size: 1.2rem;
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+#leaderboard {
+  height: 100vh;
+  width: 250px;
+  display: flex;
+  position: absolute;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.281);
+  padding: 40px 0;
+  right: 40px;
+  top: 0;
+}
+
+#highScores {
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  align-items: center;
+}
+
+#highScoreForm {
+  display: none;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+#initials {
+  width: 50px;
+  text-align: center;
+  padding: 0.2rem;
 }

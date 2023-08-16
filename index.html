@@ -4,21 +4,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Fondamento&family=Jost:wght@200&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/style.css">
   <title>JavaScript Quiz</title>
 </head>
 
 <header class="container header">
-  <h1>Let's play a JavaScript quiz!!</h1>
-  <h3>See if you can beat the timer. If you do, you can add your score to the HALL OF FAME!!</h3>
-  <h4>Good luck!!</h4>
+  <h1>Quizzed All Over</h1>
+  <h2>Voted <span class="goty">Game of the Year</span> by my wife</h2>
+  <p>
+    How much random information do you know? Click 'Play' to find out. Correct answers are worth 10 points. Wrong
+    answers deducts 5 points from the score and time. High scores will be added to the leaderboard. <br>Good luck!
+  </p>
 </header>
 
 <body>
+  <div id="countdown"></div>
   <div class="container">
-  <button type="button" class="startGame-btn">Play Game!</button>
-</div>
-<div class="container" id="countdown"></div>
+    <div id="quizDisplay"></div>
+    <div id="question"></div>
+    <div id="answers"></div>
+  </div>
+
+  <div id="leaderboard">
+    <h3>High Scores</h3>
+    <div id="highScores"></div>
+  </div>
+
+  <div class="container gameButtons">
+    <button type="button" id="startGame">Play</button>
+  </div>
+
+  <form id="highScoreForm">
+    <label for="initials">Enter your initials:</label>
+    <input type="text" id="initials" name="initials" maxLength="3" required>
+    <button type="submit">Submit</button>
+  </form>
+
   <script src="./script/script.js"></script>
 </body>
 
