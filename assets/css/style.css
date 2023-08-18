@@ -133,12 +133,15 @@ button:hover {
 
 #startGame {
   display: block;
+  position: absolute;
+  bottom: 1rem;
+  margin: 1.5rem auto;
 }
 
 #countdown {
   font-size: 2.5rem;
   line-height: 3rem;
-  margin: 1.5rem auto;
+  margin: 1rem auto;
   text-align: center;
 }
 
@@ -154,6 +157,17 @@ button:hover {
   text-align: center;
   width: 80%;
   margin: 0 auto;
+}
+
+#scoreContainer {
+  text-align: center;
+}
+
+#gameScore {
+  margin-bottom: 20px;
+  font-size: 40px;
+  line-height: 45px;
+  display: none;
 }
 
 #leaderboard {
@@ -179,8 +193,8 @@ button:hover {
 
 #highScoreForm {
   display: none;
+  margin: 0 auto;
   text-align: center;
-  margin-top: 2rem;
 }
 
 #initials {

@@ -4,6 +4,7 @@ const answerEl = document.getElementById('answers');
 const timerEl = document.getElementById('countdown');
 const initEl = document.getElementById('startGame');
 const quizDisplayEl = document.getElementById('quizDisplay');
+const gameScoreEl = document.getElementById('gameScore');
 const scoresEl = document.getElementById('highScores');
 const recordInitials = document.querySelector('#highScoreForm');
 const inputInitials = document.getElementById('initials');
@@ -13,9 +14,9 @@ let startClockInterval;
 let startGameInterval;
 
 // Game variables
-let untilStart;
+let untilStart = 0;
 let gameIsRunning = false;
-let clockTime;
+let clockTime = 0;
 let currentIndex = 0;
 let scoreTotal = 0;
 const questions = [
@@ -112,62 +113,49 @@ const questions = [
 		correctChoice: 3,
 	},
 ];
+
+// Pulls top scores from local storage
 let highScores = JSON.parse(localStorage.getItem('bestScores')) || [];
 
-// Reset game state
-function resetGame() {
-	clearInterval(startClockInterval);
-	clearInterval(startGameInterval);
-	gameIsRunning = false;
-	currentIndex = 0;
-	scoreTotal = 0;
-	clear();
+// Clear text and images from screen
+function clear() {
+	questionEl.textContent = '';
+	answerEl.innerHTML = '';
+	quizDisplayEl.innerHTML = '';
 }
 
 // Display countdown before the game starts
 function countdown() {
-	untilStart = 3;
 	initEl.textContent = untilStart;
 	startClockInterval = setInterval(function () {
-		untilStart--;
-
 		if (untilStart > 0) {
-			initEl.textContent = untilStart;
-		} else if (untilStart === 0) {
-			initEl.textContent = 'GO!';
+			initEl.textContent = untilStart--;
 		} else {
 			initEl.textContent = 'End Game';
 			clearInterval(startClockInterval);
-			gamePlay();
+			gameLoop();
 		}
 	}, 1000);
+	gameScoreEl.style.display = 'none';
 }
 
-// Sets game timer and counts down 1 unit per second
-function gameTimer() {
-	clearInterval(startClockInterval);
-	timerEl.textContent = clockTime;
-	startGameInterval = setInterval(function () {
-		clockTime--;
-		if (clockTime >= 0) {
-			timerEl.textContent = clockTime;
-		} else {
-			clearInterval(startGameInterval);
-			timerEl.innerHTML = '0';
-			endGame();
-		}
-	}, 1000);
-}
-
-// Play the game
-function gamePlay() {
-	if (currentIndex < questions.length && clockTime >= 0) {
-		gameTimer();
+// Starts game loop and iterates through questions
+function gameLoop() {
+	if (currentIndex < questions.length && clockTime > 0) {
 		displayQuestion();
+		timerEl.textContent = clockTime;
+		startGameInterval = setInterval(function () {
+			if (clockTime >= 0 && currentIndex < questions.length) {
+				timerEl.textContent = clockTime--;
+			} else {
+				clearInterval(startGameInterval);
+				timerEl.innerHTML = '';
+				gameScoreEl.style.display = 'block';
+				endGame();
+			}
+		}, 1000);
 	} else {
-		timerEl.innerHTML = '0';
 		endGame();
-		totalScore();
 	}
 }
 
@@ -176,7 +164,9 @@ function endGame() {
 	clearInterval(startGameInterval);
 	clearInterval(startClockInterval);
 	gameIsRunning = false;
+	initEl.innerHTML = 'Play';
 	clear();
+	gameScore();
 }
 
 // Display the current question
@@ -186,19 +176,22 @@ function displayQuestion() {
 	questionEl.textContent = currentQuestion.question;
 	createImageContainer(currentQuestion.image, currentQuestion.imageAlt);
 	answerChoices(currentQuestion.choices);
+
+	if (clockTime === 0) {
+		questionEl.innerHTML = '';
+		recordInitials.style.display = 'block';
+	}
 }
 
 // Create an image container and append image with alt to screen
 function createImageContainer(imageSrc, imageAlt) {
 	const imageContainer = document.createElement('div');
-	imageContainer.style.marginBottom = '28px';
-	imageContainer.style.paddingBottom = '20px';
-	imageContainer.style.height = '150px';
-	imageContainer.style.width = '280px';
+	imageContainer.style.height = '200px';
+	imageContainer.style.width = '300px';
 	const createImage = document.createElement('img');
 	createImage.src = imageSrc;
 	createImage.alt = imageAlt;
-	createImage.style.height = 'auto';
+	createImage.style.height = '100%';
 	createImage.style.width = '100%';
 	imageContainer.appendChild(createImage);
 	quizDisplayEl.appendChild(imageContainer);
@@ -207,19 +200,19 @@ function createImageContainer(imageSrc, imageAlt) {
 // Display answer choices
 function answerChoices(choices) {
 	const answerListContainer = document.createElement('div');
-	for (let i = 0; i < choices.length; i++) {
-		const choiceButton = createChoiceButton(choices[i]);
+	for (const choice of choices) {
+		const choiceButton = createChoiceButton(choice);
 		answerListContainer.appendChild(choiceButton);
 	}
 	answerEl.appendChild(answerListContainer);
 }
 
 // Create a choice button
-function createChoiceButton(choice) {
+function createChoiceButton(selectedChoice) {
 	const choiceButton = document.createElement('button');
-	choiceButton.textContent = choice;
+	choiceButton.textContent = selectedChoice;
 	choiceButton.addEventListener('click', function () {
-		checkAnswer(choice);
+		checkAnswer(selectedChoice);
 	});
 	return choiceButton;
 }
@@ -227,39 +220,39 @@ function createChoiceButton(choice) {
 // Check answer for correct answer
 function checkAnswer(selectedChoice) {
 	const currentQuestion = questions[currentIndex];
-	if (
-		selectedChoice ===
-		currentQuestion.choices[currentQuestion.correctChoice]
-	) {
-		scoreTotal += 10;
+	if (selectedChoice === currentQuestion.choices[currentQuestion.correctChoice]) {
+			scoreTotal += 10;
 	} else {
 		scoreTotal -= 5;
 		clockTime -= 5;
 	}
 	currentIndex++;
+	displayQuestion();
 }
 
-// Display total score
-function totalScore() {
-	quizDisplayEl.innerHTML = `Game over. Your score was:<br>${score}`;
-	quizDisplayEl.style.textAlign = 'center';
-	initEl.textContent = 'Play Again!';
-	recordInitials.style.display = 'block';
+function gameScore() {
+	if (scoreTotal === 100) {
+		timerEl.textContent = '';
+		gameScoreEl.style.display = 'block';
+		gameScoreEl.innerHTML = `PERFECT SCORE!<br>Score: ${scoreTotal}`;
+		recordInitials.style.display = 'block';
+	} else if (scoreTotal >= 70 && scoreTotal < 100) {
+		timerEl.textContent = '';
+		gameScoreEl.style.display = 'block';
+		gameScoreEl.innerHTML = `DE-CENT SCORE!<br>Score: ${scoreTotal}`;
+		recordInitials.style.display = 'block';
+	} else if (scoreTotal < 70 && scoreTotal >= 40) {
+		timerEl.textContent = '';
+		gameScoreEl.style.display = 'block';
+		gameScoreEl.innerHTML = `Eh. You did fine.<br>Score: ${scoreTotal}`;
+		recordInitials.style.display = 'block';
+	} else if (clockTime > 0 || scoreTotal < 40) {
+		timerEl.textContent = '';
+		gameScoreEl.style.display = 'block';
+		gameScoreEl.innerHTML = `Don't quit your day job...<br>Score: ${scoreTotal}`;
+		recordInitials.style.display = 'block';
+	}
 }
-
-recordInitials.addEventListener('submit', function (event) {
-	event.preventDefault();
-
-	const playerInitials = inputInitials.value.toUpperCase();
-
-	highScores.push({ initials: playerInitials, score: scoreTotal });
-	highScores.sort((a, b) => b.score - a.score);
-	highScores = highScores.slice(0, 10);
-
-	localStorage.setItem('bestScores', JSON.stringify(highScores));
-
-	displayHighScores();
-});
 
 // Lists high scores to the leaderboard
 function displayHighScores() {
@@ -279,30 +272,45 @@ function displayHighScores() {
 	}
 }
 
-// Clear text and images from screen
-function clear() {
-	questionEl.textContent = '';
-	answerEl.innerHTML = '';
-	quizDisplayEl.innerHTML = '';
-}
+recordInitials.addEventListener('submit', function (event) {
+	event.preventDefault();
+
+	const playerInitials = inputInitials.value.toUpperCase();
+
+	highScores.push({ initials: playerInitials, score: scoreTotal });
+	highScores.sort((a, b) => b.score - a.score);
+	highScores = highScores.slice(0, 10);
+
+	localStorage.setItem('bestScores', JSON.stringify(highScores));
+
+	displayHighScores();
+});
 
 // Event listener to start and end the game
 initEl.addEventListener('click', function () {
 	if (gameIsRunning) {
 		endGame();
+		if (clockTime > 0) {
+			recordInitials.style.display = 'none';
+			questionEl.textContent = 'Wow, too chicken?';
+			gameScoreEl.innerHTML = `You don't get to join the elite leaderboard.<br>Score: 0`;
+		} else {
+		recordInitials.style.display = 'block';
 		timerEl.style.textAlign = 'center';
-		timerEl.innerHTML = `Game Over.<br>Click play to try again.<br> Score: 0`;
 		initEl.textContent = 'Play';
-	} else {
+	} }
+	else {
 		endGame();
 		recordInitials.style.display = 'none';
 		timerEl.innerHTML = '';
-		untilStart = 4;
+		untilStart = 3;
 		clockTime = 30;
+		scoreTotal = 0;
 		currentIndex = 0;
 		countdown();
 		gameIsRunning = true;
 	}
 });
 
+// Displays High Scores constantly to viewport
 displayHighScores();

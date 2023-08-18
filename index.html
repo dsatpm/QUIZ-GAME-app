@@ -33,14 +33,18 @@
   </div>
 
   <div class="container gameButtons">
+    <div id="scoreContainer">
+      <div id="gameScore"></div>
+    <form id="highScoreForm">
+      <label for="initials">Enter your initials:</label>
+      <input type="text" id="initials" name="initials" maxLength="3" required>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
     <button type="button" id="startGame">Play</button>
   </div>
 
-  <form id="highScoreForm">
-    <label for="initials">Enter your initials:</label>
-    <input type="text" id="initials" name="initials" maxLength="3" required>
-    <button type="submit">Submit</button>
-  </form>
+
 
   <script src="./script/script.js"></script>
 </body>
