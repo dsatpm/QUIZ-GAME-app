@@ -284,6 +284,7 @@ recordInitials.addEventListener('submit', function (event) {
 	localStorage.setItem('bestScores', JSON.stringify(highScores));
 
 	displayHighScores();
+	recordInitials.style.display = 'none'; // Hides high score submission after user enters initials
 });
 
 // Event listener to start and end the game
