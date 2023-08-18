@@ -172,7 +172,7 @@ function endGame() {
 // Display the current question
 function displayQuestion() {
 	clear();
-	const currentQuestion = questions[currentIndex];
+	const currentQuestion = questions[currentIndex]; // Displays current question of current index
 	questionEl.textContent = currentQuestion.question;
 	createImageContainer(currentQuestion.image, currentQuestion.imageAlt);
 	answerChoices(currentQuestion.choices);
@@ -185,7 +185,7 @@ function displayQuestion() {
 
 // Create an image container and append image with alt to screen
 function createImageContainer(imageSrc, imageAlt) {
-	const imageContainer = document.createElement('div');
+	const imageContainer = document.createElement('div'); 
 	imageContainer.style.height = '200px';
 	imageContainer.style.width = '300px';
 	const createImage = document.createElement('img');
@@ -200,14 +200,14 @@ function createImageContainer(imageSrc, imageAlt) {
 // Display answer choices
 function answerChoices(choices) {
 	const answerListContainer = document.createElement('div');
-	for (const choice of choices) {
-		const choiceButton = createChoiceButton(choice);
-		answerListContainer.appendChild(choiceButton);
+	for (const choice of choices) {				 //
+		const choiceButton = createChoiceButton(choice); // Iterates through choice array of questions object
+		answerListContainer.appendChild(choiceButton);	 // 
 	}
 	answerEl.appendChild(answerListContainer);
 }
 
-// Create a choice button
+// Creates buttons with answered choices applied to them
 function createChoiceButton(selectedChoice) {
 	const choiceButton = document.createElement('button');
 	choiceButton.textContent = selectedChoice;
@@ -217,10 +217,10 @@ function createChoiceButton(selectedChoice) {
 	return choiceButton;
 }
 
-// Check answer for correct answer
+// Check answer for correct answer and alter score and/or clock time
 function checkAnswer(selectedChoice) {
 	const currentQuestion = questions[currentIndex];
-	if (selectedChoice === currentQuestion.choices[currentQuestion.correctChoice]) {
+	if (selectedChoice === currentQuestion.choices[currentQuestion.correctChoice]) { // Compares user answer to correct answer
 			scoreTotal += 10;
 	} else {
 		scoreTotal -= 5;
@@ -230,6 +230,7 @@ function checkAnswer(selectedChoice) {
 	displayQuestion();
 }
 
+// Lets user know how well (or poorly) they did after the game ends
 function gameScore() {
 	if (scoreTotal === 100) {
 		timerEl.textContent = '';
@@ -272,16 +273,17 @@ function displayHighScores() {
 	}
 }
 
+// Event listener for score submission to leaderboard
 recordInitials.addEventListener('submit', function (event) {
 	event.preventDefault();
 
-	const playerInitials = inputInitials.value.toUpperCase();
+	const playerInitials = inputInitials.value.toUpperCase(); // Forces initials to upper case
 
 	highScores.push({ initials: playerInitials, score: scoreTotal });
-	highScores.sort((a, b) => b.score - a.score);
-	highScores = highScores.slice(0, 10);
+	highScores.sort((a, b) => b.score - a.score); // Sorts scores in decending order (highest to lowest)
+	highScores = highScores.slice(0, 10); // Applies only the top 10 scores to leaderboard
 
-	localStorage.setItem('bestScores', JSON.stringify(highScores));
+	localStorage.setItem('bestScores', JSON.stringify(highScores)); // Sets best scores into local storage
 
 	displayHighScores();
 });
